@@ -4,12 +4,25 @@
 
 ### **elasticsearch**
 ```bash
-docker run -d -p 5601:5601 -p 9200:9200 -p 5044:5044 -e LOGSTASH_START=0 --name elk sebp/elk
+docker run \
+    -d \
+    -p 5601:5601 \
+    -p 9200:9200 \
+    -p 5044:5044 \
+    -e LOGSTASH_START=0 \
+    --name elk \
+    sebp/elk
 ```
 
 ### **grafana**
 ```bash
-docker run -d -p 3000:3000 -e "GF_INSTALL_PLUGINS=grafana-piechart-panel" -v grafana-storage:/var/lib/grafana --name=grafana grafana/grafana
+docker run \
+    -d \
+    -p 3000:3000 \
+    -e "GF_INSTALL_PLUGINS=grafana-piechart-panel" \
+    -v grafana-storage:/var/lib/grafana \
+    --name=grafana \
+    grafana/grafana
 ```
 
 ---
@@ -33,12 +46,12 @@ npm run parse:q {APIKEY} {FORMID}
 ### **2. parse results**
 gets survey answers and maps with questions
 ```bash
-npm run parse:r {APIKEY} {FORMID} [LAST_TOKEN(optional)]
+npm run parse:r {APIKEY} {FORMID} [LAST_TOKEN]
 ```
 **args**
 - `APIKEY`: typeform api key
 - `FORMID`: typeform form id
-- `LAST_TOKEN` : *typeform api supports results after survey token: if `LAST_TOKEN` arg is provided, api response will contain the results `{ after: LAST_TOKEN } ` based on `landed` field*
+- `LAST_TOKEN` : (optional) *typeform api supports results after survey token. if `LAST_TOKEN` arg is provided, api response will contain the results `{ after: LAST_TOKEN } ` based on `landed` field*
 
 **outputs**
 - `./assets/survey/results_{FORMID}.json`: typeform api response output 
