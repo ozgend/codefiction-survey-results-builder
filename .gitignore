@@ -1,0 +1,6 @@
+node_modules/
+assets/survey/*.json
+assets/dashboard/d_*.json
+/package-lock.json
+.vscode/
+.DS_Store
