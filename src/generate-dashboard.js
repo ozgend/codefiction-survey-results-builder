@@ -11,7 +11,7 @@ const loadQuestions = async function (id) {
 }
 
 const loadTemplate = async function (id) {
-    const file = `./assets/dashboard/dashboard-template-${id}.json`;
+    const file = `./assets/dashboard/${id}.json`;
     const temp = JSON.parse(fs.readFileSync(file));
     console.info(`+ done loading template: ${file}`);
     return temp;
