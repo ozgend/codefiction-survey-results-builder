@@ -11,32 +11,38 @@ const loadQuestions = async function (id) {
     return questions;
 }
 
-const getResults = async function (apiKey, formId, lastToken) {
+const getResults = async function (apiKey, formId, token, direction) {
     let allItems;
     const file = `./assets/survey/results_${formId}.json`;
 
     if (file && fs.existsSync(file)) {
         allItems = JSON.parse(fs.readFileSync(file));
     } else {
+
         const typeformOperations = new TypeformOperations(apiKey);
 
-        const fetch = async function (token) {
-            const options = { uid: formId, page_size: 25 };
-            if (token) {
-                options.after = token;
+        const fetchResults = async function (_token, _direction) {
+            const options = { uid: formId, page_size: 500 };
+
+            if (_direction === 'reverse') {
+                options.before = _token;
             }
+            else if (_direction === 'forward') {
+                options.after = _token;
+            }
+
             const result = await typeformOperations.getResults(options);
             return result;
         }
 
-        const result = await fetch(lastToken);
+        const result = await fetchResults(token, direction);
         allItems = [].concat(result.items);
 
         for (let p = 0; p < result.page_count; p++) {
-            console.info(`+ fetching page ${p + 1} of ${result.page_count}`);
+            console.info(`+ fetching page ${p + 1} of ${result.page_count} - ${result.items.length} items.`);
 
             const lastSurveyToken = allItems[allItems.length - 1].token;
-            const fetchResult = await fetch(lastSurveyToken);
+            const fetchResult = await fetchResults(lastSurveyToken, direction);
             allItems = allItems.concat(fetchResult.items);
         }
 
@@ -49,11 +55,11 @@ const getResults = async function (apiKey, formId, lastToken) {
     return allItems;
 }
 
-const processResults = async function (apiKey, formId, lastToken) {
+const processResults = async function (apiKey, formId, token, direction) {
     const questions = await loadQuestions(formId);
     const questionMap = _.keyBy(questions, 'id');
     const questionKeys = Object.keys(questionMap);
-    const allItems = await getResults(apiKey, formId, lastToken);
+    const allItems = await getResults(apiKey, formId, token, direction);
 
     console.info(`+ done loading results: ${allItems.length}`);
 
@@ -137,13 +143,14 @@ const processResults = async function (apiKey, formId, lastToken) {
 
 const main = async function () {
     if (process.argv.length < 4) {
-        console.warn('-- usage parse-results {APIKEY} {FORMID} [LAST_TOKEN]');
+        console.warn('-- usage parse-results {APIKEY} {FORMID} [{LAST_TOKEN} {DIRECTION}]');
         return;
     }
     const apiKey = process.argv[2];
     const formId = process.argv[3];
-    const lastToken = process.argv[4];
-    const responses = await processResults(apiKey, formId, lastToken);
+    const token = process.argv[4];
+    const direction = process.argv.length === 5 ? process.argv[5] : 'reverse';
+    const responses = await processResults(apiKey, formId, token, direction);
     console.info(`done parse-results: ${responses.length}`);
 }
 

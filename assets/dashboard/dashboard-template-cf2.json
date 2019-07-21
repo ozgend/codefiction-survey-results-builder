@@ -143,8 +143,8 @@
               "id": "4",
               "settings": {
                 "min_doc_count": 1,
-                "order": "asc",
-                "orderBy": "_term",
+                "order": "desc",
+                "orderBy": "_count",
                 "size": "10"
               },
               "type": "terms"
