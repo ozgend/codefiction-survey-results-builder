@@ -3,13 +3,7 @@
 const fs = require('fs');
 const TypeformOperations = require('./typeform-operations.js');
 const _ = require('lodash');
-const SURVEY_FOLDER = `./assets/survey`;
-
-const assureSurveyFolderExists = async () => {
-  if (!fs.existsSync(SURVEY_FOLDER)) {
-    fs.mkdirSync(SURVEY_FOLDER);
-  }
-};
+const { SURVEY_FOLDER } = require('./utils');
 
 const getForm = async (apiKey, formId) => {
   let form;
@@ -70,17 +64,7 @@ const mapFormFields = async (apiKey, formId) => {
   return questions;
 };
 
-const main = async () => {
-  if (process.argv.length < 4) {
-    console.warn('-- usage parse-questions {APIKEY} {FORMID}');
-    return;
-  }
-  const apiKey = process.argv[2];
-  const formId = process.argv[3];
+module.exports.parseQuestionsProcessor = async ({ apiKey, formId }) => {
   const questions = await mapFormFields(apiKey, formId);
   console.info(`done parse-questions: ${questions.length}`);
 };
-
-assureSurveyFolderExists();
-
-main();

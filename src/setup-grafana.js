@@ -1,51 +1,51 @@
-'use strict';
-
 const DashboardOperations = require('./dashboard-operations');
 const GrafanaOperations = require('./grafana-operations');
 
-const setupGrafana = async function (options) {
-    const grafanaOperations = new GrafanaOperations(options.grafana);
-    const dashboadOperations = new DashboardOperations();
-    
-    const dashboardObject = await dashboadOperations.generateDashboard(options.dashboardTemplateId, options.formId);
+const setupGrafana = async options => {
+  const grafanaOperations = new GrafanaOperations(options.grafana);
+  const dashboadOperations = new DashboardOperations();
 
-    const esDatasourceOptions = {
-        name: `es-survey-${options.formId}`.toLowerCase(),
-        type: 'elasticsearch',
-        access: 'proxy',
-        url: 'http://elk:9200',
-        database: `survey-${options.formId}`.toLowerCase(),
-        basicAuth: false,
-        jsonData: {
-            esVersion: 70,
-            maxConcurrentShardRequests: 256,
-            timeField: 'landed'
-        }
-    };
+  const dashboardObject = await dashboadOperations.generateDashboard(
+    options.dashboardTemplateId,
+    options.formId
+  );
 
-    await grafanaOperations.createDatasource(esDatasourceOptions);
-    await grafanaOperations.createDashboard(dashboardObject);
-}
-
-const main = async function () {
-    if (process.argv.length < 7) {
-        console.warn('-- usage setup-grafana {TEMPLATEID} {FORMID} {GRAFANA_URL} {GRAFANA_USER} {GRAFANA_PASS}');
-        return;
+  const esDatasourceOptions = {
+    name: `es-survey-${options.formId}`.toLowerCase(),
+    type: 'elasticsearch',
+    access: 'proxy',
+    url: 'http://elk:9200',
+    database: `survey-${options.formId}`.toLowerCase(),
+    basicAuth: false,
+    jsonData: {
+      esVersion: 70,
+      maxConcurrentShardRequests: 256,
+      timeField: 'landed'
     }
+  };
 
-    const options = {
-        dashboardTemplateId: process.argv[2],
-        formId: process.argv[3],
-        grafana: {
-            url: process.argv[4],
-            user: process.argv[5],
-            pass: process.argv[6]
-        }
-    };
+  await grafanaOperations.createDatasource(esDatasourceOptions);
+  await grafanaOperations.createDashboard(dashboardObject);
+};
 
-    await setupGrafana(options);
+module.exports.setupGrafanaProcessor = async ({
+  dashboardTemplateId,
+  formId,
+  url,
+  user,
+  pass
+}) => {
+  const options = {
+    dashboardTemplateId,
+    formId,
+    grafana: {
+      url,
+      user,
+      pass
+    }
+  };
 
-    console.info(`done generate-dashboard`);
-}
+  await setupGrafana(options);
 
-main();
+  console.info(`done generate-dashboard`);
+};
