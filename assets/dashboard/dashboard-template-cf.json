@@ -13,10 +13,7 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
   "graphTooltip": 0,
-  "id": 3,
-  "iteration": 1561070871139,
   "links": [],
   "panels": [
     {
@@ -96,8 +93,6 @@
           "timeField": "landed"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "q01",
       "type": "bargauge"
     }
@@ -108,7 +103,6 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "text": "All",
           "value": "$__all"
@@ -135,8 +129,8 @@
     ]
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "now-6M",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [

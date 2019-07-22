@@ -13,10 +13,7 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
   "graphTooltip": 0,
-  "id": 5,
-  "iteration": 1561131023304,
   "links": [],
   "panels": [
     {
@@ -96,15 +93,12 @@
           "timeField": "landed"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "q01",
       "type": "bargauge"
     },
     {
       "aliasColors": {},
       "breakPoint": "50%",
-      "cacheTimeout": null,
       "combine": {
         "label": "Others",
         "threshold": 0
@@ -119,7 +113,6 @@
         "y": 0
       },
       "id": 4,
-      "interval": null,
       "legend": {
         "percentage": true,
         "show": true,
@@ -173,8 +166,6 @@
           "timeField": "landed"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "q01",
       "type": "grafana-piechart-panel",
       "valueName": "total"
@@ -182,7 +173,6 @@
     {
       "aliasColors": {},
       "bars": true,
-      "cacheTimeout": null,
       "dashLength": 10,
       "dashes": false,
       "datasource": "es-survey-jbw2cp",
@@ -260,9 +250,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "q01",
       "tooltip": {
         "shared": false,
@@ -271,9 +259,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "series",
-        "name": null,
         "show": true,
         "values": [
           "total"
@@ -282,18 +268,12 @@
       "yaxes": [
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
@@ -309,7 +289,6 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "text": "All",
           "value": [
@@ -338,8 +317,8 @@
     ]
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "now-6M",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
