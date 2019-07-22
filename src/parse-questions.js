@@ -44,7 +44,7 @@ const mapFormFields = async (apiKey, formId) => {
           id: field.id,
           title: field.title,
           // ref: field.ref,
-          type: field.type,
+          // type: field.type,
           order: 'q' + `${++q}`.padStart(2, 0)
         };
       });

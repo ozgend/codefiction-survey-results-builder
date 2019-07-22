@@ -4,6 +4,19 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Grafana Setup",
+            "program": "${workspaceFolder}/src/setup-grafana.js",
+            "args": [
+                "templateId",
+                "formId",
+                "grafanaUrl",
+                "grafanaUser",
+                "grafanaPass"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Dashboard",
             "program": "${workspaceFolder}/src/generate-dashboard.js",
             "args": [

@@ -6,13 +6,15 @@
         "parse:q": "node ./src/parse-questions.js",
         "parse:r": "node ./src/parse-results.js",
         "seed:es": "node ./src/seed-elasticsearch.js",
-        "gen:d": "node ./src/generate-dashboard.js"
+        "gen:d": "node ./src/generate-dashboard.js",
+        "setup:grafana": "node ./src/setup-grafana.js"
     },
     "author": "ozgend",
     "license": "Codefiction",
     "dependencies": {
         "@elastic/elasticsearch": "^7.1.0",
         "@typeform/api-client": "^1.3.1",
+        "jsgrafana": "^1.0.5",
         "lodash": "^4.17.11"
     },
     "devDependencies": {

@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  elk:
+    image: sebp/elk
+    container_name: elk
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+    environment: 
+      - LOGSTASH_START=0
+    networks: 
+      - survey_process
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment: 
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    networks: 
+      - survey_process
+
+networks: 
+  survey_process: 

@@ -1,28 +1,32 @@
 # codefiction survey results builder
 
-## storage and visualization 
+## steps summary
 
-### **elasticsearch**
 ```bash
-docker run \
-    -d \
-    -p 5601:5601 \
-    -p 9200:9200 \
-    -p 5044:5044 \
-    -e LOGSTASH_START=0 \
-    --name elk \
-    sebp/elk
+## initialize storage and visualization 
+$ docker-compose up -d
+
+## parse form and questions
+$ npm run parse:q {APIKEY} {FORMID}
+
+## parse answers and results
+$ npm run parse:r {APIKEY} {FORMID}
+
+## seed elasticsearch
+$ npm run seed:es {ESHOST} {FORMID}
+
+## setup grafana
+$ npm run setup:grafana {TEMPLATEID} {FORMID} {GRAFANA_URL} {GRAFANA_USER} {GRAFANA_PASS}
 ```
 
-### **grafana**
+---
+
+
+## initialize storage and visualization 
+
 ```bash
-docker run \
-    -d \
-    -p 3000:3000 \
-    -e "GF_INSTALL_PLUGINS=grafana-piechart-panel" \
-    -v grafana-storage:/var/lib/grafana \
-    --name=grafana \
-    grafana/grafana
+## starts elasticsearch, kibana and grafana
+docker-compose up -d
 ```
 
 ---
@@ -72,16 +76,23 @@ npm run seed:es {ESHOST} {FORMID}
 
 
 
-### **4. generate dashboard**
-generates grafana dashboard for given template with question filters
+### **4. setup grafana dashboard**
+sets up and generates grafana dashboard for given template with question filters
 ```bash
-npm run gen:d {TEMPLATEID} {FORMID}
+npm run setup:grafana {TEMPLATEID} {FORMID} {GRAFANA_URL} {GRAFANA_USER} {GRAFANA_PASS}
 ```
 **args**
 - `TEMPLATEID`: provided template name under `./assets/dashboard/`
 - `FORMID`: typeform form id
+- `GRAFANA_URL`: grafana url, typically *http://localhost:3000*
+- `GRAFANA_USER`: grafana admin user, typically *admin*
+- `GRAFANA_PASS`: grafana admin pass, typically *admin*
+
 
 **outputs**
-- `./assets/dashboard/d_{TEMPLATEID}_{FORMID}_{DATETIME}_{RANDOM}.json`:  generated grafana dashbaord 
+- configured grafana elasticsearch datasource named `es-survey-{FORMID}`
+- `./assets/dashboard/d_{FORMID}_{DATETIME}_{RANDOM}.json`:  generated grafana dashbaord 
+- imported dashboard named `d_{FORMID}_{DATETIME}_{RANDOM}`
 
 (*import generated `dashboard.json` into grafana*)
+
