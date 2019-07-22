@@ -3,14 +3,14 @@
 const fs = require('fs');
 const { Client } = require('@elastic/elasticsearch')
 
-const loadAnswers = async function(id) {
+const loadAnswers = async function (id) {
     const file = `./assets/survey/processed_answers_${id}.json`;
     const answers = JSON.parse(fs.readFileSync(file));
     console.info(`+ done loading answers: ${file}`);
     return answers;
 }
 
-const save = async function(client, index, type, answers) {
+const save = async function (client, index, type, answers) {
     let failed = [];
 
     for (let a = 0; a < answers.length; a++) {
@@ -33,16 +33,40 @@ const save = async function(client, index, type, answers) {
     return result;
 }
 
-const uploadToElasticsearch = async function(esHost, id) {
+const uploadToElasticsearch = async function (esHost, id) {
     const index = `survey-${id}`.toLowerCase();
     const type = `answer-${id}`.toLowerCase();
     const answers = await loadAnswers(id);
     const client = new Client({ node: esHost });
 
-    try {
-        const ires = await client.indices.create({ index });
-    } catch (error) {
+    const indexExistResponse = await client.indices.exists({ index });
 
+    if (indexExistResponse.statusCode === 200) {
+        await client.indices.delete(index);
+    }
+    else {
+        try {
+            const indexParameters = {
+                index,
+                body: {
+                    settings: {
+                        index: {
+                            mapping: {
+                                total_fields: {
+                                    limit: 4000
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            await client.indices.create(indexParameters);
+
+        } catch (error) {
+            console.error(' ---- index create error:', error);
+            throw error;
+        }
     }
 
     let result = await save(client, index, type, answers);
@@ -55,7 +79,7 @@ const uploadToElasticsearch = async function(esHost, id) {
     console.info(`+ done uploading to es: ${answers.length}`);
 }
 
-const main = async function() {
+const main = async function () {
     if (process.argv.length < 4) {
         console.warn('-- usage seed-elasticsearch {ESHOST} {FORMID}');
         return;
