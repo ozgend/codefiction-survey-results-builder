@@ -4,55 +4,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Grafana Setup",
-            "program": "${workspaceFolder}/src/setup-grafana.js",
-            "args": [
-                "templateId",
-                "formId",
-                "grafanaUrl",
-                "grafanaUser",
-                "grafanaPass"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Dashboard",
-            "program": "${workspaceFolder}/src/generate-dashboard.js",
-            "args": [
-                "templateId",
-                "formId"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Elasticsearch",
-            "program": "${workspaceFolder}/src/seed-elasticsearch.js",
-            "args": [
-                "host_url",
-                "formId"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Results",
-            "program": "${workspaceFolder}/src/parse-results.js",
-            "args": [
-                "typeformApiKey",
-                "formId"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Questions",
-            "program": "${workspaceFolder}/src/parse-questions.js",
-            "args": [
-                "typeformApiKey",
-                "formId"
-            ]
+            "name": "Automation",
+            "program": "${workspaceFolder}/src/index.js"
         }
     ]
 }
